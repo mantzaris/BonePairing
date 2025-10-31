@@ -1,0 +1,80 @@
+
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Bones Association Explorer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="toolbar">
+    <div class="control">
+      <label for="expertSelect">View</label>
+      <select id="expertSelect">
+        <option value="consensus">Consensus</option>
+      </select>
+    </div>
+
+    <div class="control">
+      <label for="aggSelect">Consensus aggregation</label>
+      <select id="aggSelect">
+        <option value="mean">Mean</option>
+        <option value="median">Median</option>
+        <option value="trimmed">Trimmed mean (10%)</option>
+        <option value="weighted">Weighted by agreement</option>
+      </select>
+    </div>
+
+    <div class="control">
+      <label for="thresholdSlider">Abs score threshold</label>
+      <input id="thresholdSlider" type="range" min="0" max="2" step="0.1" value="1" />
+      <span id="thresholdValue">1.0</span>
+    </div>
+
+    <div class="control">
+      <label><input id="showNegative" type="checkbox" checked /> Show negative edges</label>
+    </div>
+
+    <div class="legend">
+      <span class="key"><span class="swatch green"></span> positive</span>
+      <span class="key"><span class="swatch red"></span> negative</span>
+    </div>
+  </header>
+
+  <svg id="graph" aria-label="Association network"></svg>
+
+  <main class="panels">
+    <section>
+      <h3>Top pairs by absolute score</h3>
+      <table id="pairsTable">
+        <thead>
+          <tr>
+            <th>Bone A</th>
+            <th>Bone B</th>
+            <th>Score</th>
+            <th>From</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section>
+      <h3>Suggested groups (must-link components)</h3>
+      <div id="clusters"></div>
+      <div class="control" style="margin-top:8px;">
+        <label for="mustLink">Must-link threshold</label>
+        <input id="mustLink" type="range" min="0" max="2" step="0.1" value="1.5" />
+        <span id="mustLinkValue">1.5</span>
+      </div>
+    </section>
+  </main>
+
+  <!-- Vendor -->
+  <script defer src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <!-- App -->
+  <script defer src="js/app.js"></script>
+</body>
+</html>

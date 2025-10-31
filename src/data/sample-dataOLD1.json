@@ -1,0 +1,37 @@
+{
+  "collectionId": "collection12",
+  "bones": [
+    { "id": "b01", "type": "humerus" },
+    { "id": "b02", "type": "ulna" },
+    { "id": "b03", "type": "femur" },
+    { "id": "b04", "type": "tibia" },
+    { "id": "b05", "type": "radius" },
+    { "id": "b06", "type": "fibula" }
+  ],
+  "experts": [
+    { "id": "e01", "name": "John Apple" },
+    { "id": "e02", "name": "Mary Chen" },
+    { "id": "e03", "name": "Sam Rivera" }
+  ],
+  "ratings": [
+    { "expertId": "e01", "boneA": "b01", "boneB": "b02", "score":  2 },
+    { "expertId": "e01", "boneA": "b01", "boneB": "b03", "score": -2 },
+    { "expertId": "e01", "boneA": "b02", "boneB": "b03", "score": -2 },
+    { "expertId": "e01", "boneA": "b04", "boneB": "b05", "score":  2 },
+    { "expertId": "e01", "boneA": "b04", "boneB": "b06", "score":  1 },
+    { "expertId": "e01", "boneA": "b05", "boneB": "b06", "score":  1 },
+
+    { "expertId": "e02", "boneA": "b01", "boneB": "b02", "score":  1 },
+    { "expertId": "e02", "boneA": "b01", "boneB": "b03", "score": -1 },
+    { "expertId": "e02", "boneA": "b02", "boneB": "b03", "score": -1 },
+    { "expertId": "e02", "boneA": "b04", "boneB": "b05", "score":  2 },
+    { "expertId": "e02", "boneA": "b05", "boneB": "b06", "score":  2 },
+
+    { "expertId": "e03", "boneA": "b01", "boneB": "b02", "score":  2 },
+    { "expertId": "e03", "boneA": "b01", "boneB": "b03", "score":  0 },
+    { "expertId": "e03", "boneA": "b02", "boneB": "b03", "score": -1 },
+    { "expertId": "e03", "boneA": "b04", "boneB": "b05", "score":  2 },
+    { "expertId": "e03", "boneA": "b04", "boneB": "b06", "score":  0 },
+    { "expertId": "e03", "boneA": "b05", "boneB": "b06", "score":  1 }
+  ]
+}
