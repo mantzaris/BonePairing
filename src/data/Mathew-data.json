@@ -1,0 +1,1608 @@
+{
+  "collectionId": "collection-from-csv-v1",
+  "bones": [
+    {
+      "id": "1",
+      "type": "tibia",
+      "laterality": "right",
+      "groundTruth": {
+        "personId": 5,
+        "used": false
+      }
+    },
+    {
+      "id": "2",
+      "type": "scapula",
+      "laterality": "right",
+      "groundTruth": {
+        "personId": 2,
+        "used": false
+      }
+    },
+    {
+      "id": "3",
+      "type": "femur",
+      "laterality": "right",
+      "groundTruth": {
+        "personId": 4,
+        "used": false
+      }
+    },
+    {
+      "id": "4",
+      "type": "rib3-8",
+      "laterality": "left",
+      "groundTruth": {
+        "personId": 2,
+        "used": false
+      }
+    },
+    {
+      "id": "5",
+      "type": "fibula",
+      "laterality": "right",
+      "groundTruth": {
+        "personId": 2,
+        "used": false
+      }
+    },
+    {
+      "id": "6",
+      "type": "humerus",
+      "laterality": "left",
+      "groundTruth": {
+        "personId": 1,
+        "used": false
+      }
+    },
+    {
+      "id": "7",
+      "type": "rib3-8",
+      "laterality": "left",
+      "groundTruth": {
+        "personId": 3,
+        "used": false
+      }
+    },
+    {
+      "id": "8",
+      "type": "rib3-8",
+      "laterality": "left",
+      "groundTruth": {
+        "personId": 2,
+        "used": false
+      }
+    },
+    {
+      "id": "9",
+      "type": "L1-4",
+      "laterality": "midline",
+      "groundTruth": {
+        "personId": 2,
+        "used": false
+      }
+    },
+    {
+      "id": "10",
+      "type": "innominate",
+      "laterality": "right",
+      "groundTruth": {
+        "personId": 1,
+        "used": false
+      }
+    },
+    {
+      "id": "11",
+      "type": "fibula",
+      "laterality": "left",
+      "groundTruth": {
+        "personId": 4,
+        "used": false
+      }
+    },
+    {
+      "id": "12",
+      "type": "rib 1",
+      "laterality": "left",
+      "groundTruth": {
+        "personId": 1,
+        "used": false
+      }
+    },
+    {
+      "id": "13",
+      "type": "radius",
+      "laterality": "left",
+      "groundTruth": {
+        "personId": 1,
+        "used": false
+      }
+    },
+    {
+      "id": "14",
+      "type": "clavicle",
+      "laterality": "left",
+      "groundTruth": {
+        "personId": 1,
+        "used": false
+      }
+    },
+    {
+      "id": "15",
+      "type": "radius",
+      "laterality": "right",
+      "groundTruth": {
+        "personId": 1,
+        "used": false
+      }
+    },
+    {
+      "id": "16",
+      "type": "L5",
+      "laterality": "midline",
+      "groundTruth": {
+        "personId": 2,
+        "used": false
+      }
+    },
+    {
+      "id": "17",
+      "type": "MT2",
+      "laterality": "left",
+      "groundTruth": {
+        "personId": 4,
+        "used": false
+      }
+    },
+    {
+      "id": "18",
+      "type": "femur",
+      "laterality": "left",
+      "groundTruth": {
+        "personId": 4,
+        "used": false
+      }
+    },
+    {
+      "id": "19",
+      "type": "MT1",
+      "groundTruth": {
+        "personId": 4,
+        "used": false
+      }
+    },
+    {
+      "id": "20",
+      "type": "innominate",
+      "laterality": "right",
+      "groundTruth": {
+        "personId": 4,
+        "used": false
+      }
+    },
+    {
+      "id": "21",
+      "type": "innominate",
+      "laterality": "left",
+      "groundTruth": {
+        "personId": 2,
+        "used": false
+      }
+    },
+    {
+      "id": "22",
+      "type": "T12",
+      "laterality": "midline",
+      "groundTruth": {
+        "personId": 5,
+        "used": false
+      }
+    },
+    {
+      "id": "23",
+      "type": "rib 1",
+      "laterality": "right",
+      "groundTruth": {
+        "personId": 1,
+        "used": false
+      }
+    },
+    {
+      "id": "24",
+      "type": "rib 1",
+      "laterality": "right",
+      "groundTruth": {
+        "personId": 3,
+        "used": false
+      }
+    },
+    {
+      "id": "25",
+      "type": "rib3-8",
+      "laterality": "left",
+      "groundTruth": {
+        "personId": 3,
+        "used": false
+      }
+    },
+    {
+      "id": "26",
+      "id_note": "referenced only",
+      "type": "unknown"
+    },
+    {
+      "id": "27",
+      "type": "T1",
+      "laterality": "midline",
+      "groundTruth": {
+        "personId": 3,
+        "used": false
+      }
+    },
+    {
+      "id": "28",
+      "type": "calcaneus",
+      "laterality": "right",
+      "groundTruth": {
+        "personId": 2,
+        "used": false
+      }
+    },
+    {
+      "id": "29",
+      "type": "patella",
+      "laterality": "right",
+      "groundTruth": {
+        "personId": 4,
+        "used": false
+      }
+    },
+    {
+      "id": "30",
+      "type": "talus",
+      "laterality": "left",
+      "groundTruth": {
+        "personId": 1,
+        "used": false
+      }
+    },
+    {
+      "id": "31",
+      "type": "clavicle",
+      "laterality": "left",
+      "groundTruth": {
+        "personId": 3,
+        "used": false
+      }
+    },
+    {
+      "id": "32",
+      "type": "MT1",
+      "groundTruth": {
+        "personId": 1,
+        "used": false
+      }
+    },
+    {
+      "id": "33",
+      "type": "T1",
+      "laterality": "midline",
+      "groundTruth": {
+        "personId": 3,
+        "used": false
+      }
+    },
+    {
+      "id": "34",
+      "type": "rib 1",
+      "laterality": "left",
+      "groundTruth": {
+        "personId": 5,
+        "used": false
+      }
+    },
+    {
+      "id": "35",
+      "type": "cranium",
+      "laterality": "midline",
+      "groundTruth": {
+        "personId": 4,
+        "used": false
+      }
+    },
+    {
+      "id": "36",
+      "type": "cranium",
+      "laterality": "midline",
+      "groundTruth": {
+        "personId": 3,
+        "used": false
+      }
+    },
+    {
+      "id": "37",
+      "type": "hand phalanx",
+      "groundTruth": {
+        "personId": 1,
+        "used": false
+      }
+    },
+    {
+      "id": "38",
+      "type": "hand phalanx",
+      "groundTruth": {
+        "personId": 1,
+        "used": false
+      }
+    },
+    {
+      "id": "39",
+      "type": "C3-6",
+      "laterality": "midline",
+      "groundTruth": {
+        "personId": 3,
+        "used": false
+      }
+    },
+    {
+      "id": "40",
+      "type": "T",
+      "laterality": "midline",
+      "groundTruth": {
+        "personId": 3,
+        "used": false
+      }
+    },
+    {
+      "id": "41",
+      "type": "C1",
+      "laterality": "midline",
+      "groundTruth": {
+        "personId": 3,
+        "used": false
+      }
+    },
+    {
+      "id": "42",
+      "type": "C3-6",
+      "laterality": "midline",
+      "groundTruth": {
+        "personId": 3,
+        "used": false
+      }
+    },
+    {
+      "id": "43",
+      "type": "rib 2 or 3",
+      "laterality": "left",
+      "groundTruth": {
+        "personId": 3,
+        "used": false
+      }
+    },
+    {
+      "id": "44",
+      "type": "MT5",
+      "laterality": "left",
+      "groundTruth": {
+        "personId": 4,
+        "used": false
+      }
+    },
+    {
+      "id": "45",
+      "type": "C3-6",
+      "laterality": "midline",
+      "groundTruth": {
+        "personId": 3,
+        "used": false
+      }
+    },
+    {
+      "id": "46",
+      "type": "talus",
+      "laterality": "left",
+      "groundTruth": {
+        "personId": 5,
+        "used": false
+      }
+    },
+    {
+      "id": "47",
+      "type": "tibia",
+      "laterality": "right",
+      "groundTruth": {
+        "personId": 2,
+        "used": false
+      }
+    },
+    {
+      "id": "48",
+      "type": "femur",
+      "laterality": "right",
+      "groundTruth": {
+        "personId": 1,
+        "used": false
+      }
+    },
+    {
+      "id": "49",
+      "type": "c1",
+      "laterality": "midline",
+      "groundTruth": {
+        "personId": 1,
+        "used": false
+      }
+    },
+    {
+      "id": "50",
+      "type": "rib 2 or 3",
+      "laterality": "right",
+      "groundTruth": {
+        "personId": 3,
+        "used": false
+      }
+    },
+    {
+      "id": "51",
+      "type": "C7",
+      "laterality": "midline",
+      "groundTruth": {
+        "personId": 3,
+        "used": false
+      }
+    },
+    {
+      "id": "52",
+      "type": "manubrium",
+      "laterality": "midline",
+      "groundTruth": {
+        "personId": 5,
+        "used": false
+      }
+    },
+    {
+      "id": "53",
+      "type": "talus",
+      "laterality": "right",
+      "groundTruth": {
+        "personId": 2,
+        "used": false
+      }
+    },
+    {
+      "id": "54",
+      "type": "mandible",
+      "laterality": "midline",
+      "groundTruth": {
+        "personId": 1,
+        "used": false
+      }
+    },
+    {
+      "id": "55",
+      "type": "scaphoid",
+      "groundTruth": {
+        "personId": 4,
+        "used": false
+      }
+    },
+    {
+      "id": "56",
+      "type": "rib 2",
+      "laterality": "right",
+      "groundTruth": {
+        "personId": 3,
+        "used": false
+      }
+    },
+    {
+      "id": "57",
+      "type": "rib3-8",
+      "laterality": "left",
+      "groundTruth": {
+        "personId": 2,
+        "used": false
+      }
+    },
+    {
+      "id": "58",
+      "type": "humerus",
+      "laterality": "right",
+      "groundTruth": {
+        "personId": 5,
+        "used": false
+      }
+    },
+    {
+      "id": "59",
+      "type": "scapula",
+      "laterality": "right",
+      "groundTruth": {
+        "personId": 5,
+        "used": false
+      }
+    },
+    {
+      "id": "60",
+      "type": "sacrum",
+      "laterality": "midline",
+      "groundTruth": {
+        "personId": 2,
+        "used": false
+      }
+    },
+    {
+      "id": "61",
+      "type": "cuboid",
+      "laterality": "right",
+      "groundTruth": {
+        "personId": 5,
+        "used": false
+      }
+    },
+    {
+      "id": "62",
+      "type": "C2",
+      "laterality": "midline",
+      "groundTruth": {
+        "personId": 3,
+        "used": false
+      }
+    },
+    {
+      "id": "63",
+      "type": "mandible",
+      "laterality": "midline",
+      "groundTruth": {
+        "personId": 5,
+        "used": false
+      }
+    },
+    {
+      "id": "64",
+      "type": "thoracic",
+      "laterality": "midline",
+      "groundTruth": {
+        "personId": 5,
+        "used": false
+      }
+    },
+    {
+      "id": "65",
+      "type": "ulna",
+      "laterality": "right",
+      "groundTruth": {
+        "personId": 2,
+        "used": false
+      }
+    },
+    {
+      "id": "66",
+      "type": "sacrum",
+      "laterality": "midline",
+      "groundTruth": {
+        "personId": 5,
+        "used": false
+      }
+    },
+    {
+      "id": "67",
+      "type": "scapula",
+      "laterality": "right",
+      "groundTruth": {
+        "personId": 3,
+        "used": false
+      }
+    },
+    {
+      "id": "68",
+      "type": "mandible",
+      "laterality": "midline",
+      "groundTruth": {
+        "personId": 4,
+        "used": false
+      }
+    },
+    {
+      "id": "69",
+      "type": "rib3-8",
+      "laterality": "right",
+      "groundTruth": {
+        "personId": 3,
+        "used": false
+      }
+    },
+    {
+      "id": "70",
+      "type": "rib1",
+      "laterality": "left",
+      "groundTruth": {
+        "personId": 3,
+        "used": false
+      }
+    },
+    {
+      "id": "71",
+      "type": "mc1",
+      "laterality": "right",
+      "groundTruth": {
+        "personId": 1,
+        "used": false
+      }
+    },
+    {
+      "id": "72",
+      "type": "scaphoid",
+      "groundTruth": {
+        "personId": 5,
+        "used": false
+      }
+    },
+    {
+      "id": "73",
+      "type": "foot phalanx",
+      "groundTruth": {
+        "personId": 1,
+        "used": false
+      }
+    },
+    {
+      "id": "74",
+      "type": "mc1",
+      "laterality": "left",
+      "groundTruth": {
+        "personId": 2,
+        "used": false
+      }
+    },
+    {
+      "id": "75",
+      "type": "mt4",
+      "laterality": "right",
+      "groundTruth": {
+        "personId": 2,
+        "used": false
+      }
+    },
+    {
+      "id": "76",
+      "type": "mt5",
+      "laterality": "right",
+      "groundTruth": {
+        "personId": 3,
+        "used": false
+      }
+    },
+    {
+      "id": "77",
+      "type": "mt2",
+      "laterality": "right",
+      "groundTruth": {
+        "personId": 2,
+        "used": false
+      }
+    },
+    {
+      "id": "78",
+      "type": "t-fused",
+      "laterality": "midline",
+      "groundTruth": {
+        "personId": 5,
+        "used": false
+      }
+    },
+    {
+      "id": "79",
+      "type": "c3-6",
+      "laterality": "midline",
+      "groundTruth": {
+        "personId": 3,
+        "used": false
+      }
+    },
+    {
+      "id": "80",
+      "type": "c2",
+      "laterality": "midline",
+      "groundTruth": {
+        "personId": 1,
+        "used": false
+      }
+    },
+    {
+      "id": "81",
+      "type": "mandible",
+      "laterality": "midline",
+      "groundTruth": {
+        "personId": 2,
+        "used": false
+      }
+    },
+    {
+      "id": "82",
+      "type": "scapula",
+      "laterality": "left",
+      "groundTruth": {
+        "personId": 1,
+        "used": false
+      }
+    },
+    {
+      "id": "83",
+      "type": "L5",
+      "laterality": "midline",
+      "groundTruth": {
+        "personId": 2,
+        "used": false
+      }
+    },
+    {
+      "id": "84",
+      "type": "tibia",
+      "laterality": "right",
+      "groundTruth": {
+        "personId": 4,
+        "used": false
+      }
+    },
+    {
+      "id": "85",
+      "type": "clavicle",
+      "laterality": "right",
+      "groundTruth": {
+        "personId": 1,
+        "used": false
+      }
+    },
+    {
+      "id": "86",
+      "type": "humerus",
+      "laterality": "right",
+      "groundTruth": {
+        "personId": 2,
+        "used": false
+      }
+    },
+    {
+      "id": "87",
+      "type": "rib 2",
+      "laterality": "left",
+      "groundTruth": {
+        "personId": 5,
+        "used": false
+      }
+    },
+    {
+      "id": "88",
+      "type": "clavicle",
+      "laterality": "left",
+      "groundTruth": {
+        "personId": 2,
+        "used": false
+      }
+    },
+    {
+      "id": "89",
+      "type": "scapula",
+      "laterality": "left",
+      "groundTruth": {
+        "personId": 3,
+        "used": false
+      }
+    },
+    {
+      "id": "90",
+      "type": "humerus",
+      "laterality": "left",
+      "groundTruth": {
+        "personId": 4,
+        "used": false
+      }
+    },
+    {
+      "id": "91",
+      "type": "patella",
+      "laterality": "right",
+      "groundTruth": {
+        "personId": 2,
+        "used": false
+      }
+    },
+    {
+      "id": "92",
+      "type": "mt4",
+      "laterality": "left",
+      "groundTruth": {
+        "personId": 5,
+        "used": false
+      }
+    },
+    {
+      "id": "93",
+      "type": "mt5",
+      "laterality": "left",
+      "groundTruth": {
+        "personId": 5,
+        "used": false
+      }
+    },
+    {
+      "id": "94",
+      "type": "mt3",
+      "laterality": "left",
+      "groundTruth": {
+        "personId": 5,
+        "used": false
+      }
+    },
+    {
+      "id": "95",
+      "type": "sacrum",
+      "laterality": "midline",
+      "groundTruth": {
+        "personId": 1,
+        "used": false
+      }
+    },
+    {
+      "id": "96",
+      "type": "ulna",
+      "laterality": "right",
+      "groundTruth": {
+        "personId": 4,
+        "used": false
+      }
+    },
+    {
+      "id": "97",
+      "type": "fibula",
+      "laterality": "left",
+      "groundTruth": {
+        "personId": 2,
+        "used": false
+      }
+    },
+    {
+      "id": "98",
+      "type": "ulna",
+      "laterality": "right",
+      "groundTruth": {
+        "personId": 3,
+        "used": false
+      }
+    },
+    {
+      "id": "99",
+      "type": "cervicle fused",
+      "laterality": "midline",
+      "groundTruth": {
+        "personId": 1,
+        "used": false
+      }
+    },
+    {
+      "id": "100",
+      "type": "femur",
+      "laterality": "left",
+      "groundTruth": {
+        "personId": 3,
+        "used": false
+      }
+    }
+  ],
+  "experts": [
+    {
+      "id": "eInd1",
+      "name": "Ind 1"
+    },
+    {
+      "id": "eInd2",
+      "name": "Ind 2"
+    },
+    {
+      "id": "eInd3",
+      "name": "Ind 3"
+    },
+    {
+      "id": "eInd4",
+      "name": "Ind 4"
+    },
+    {
+      "id": "eInd5",
+      "name": "Ind 5"
+    }
+  ],
+  "ratings": [
+    {
+      "expertId": "eInd1",
+      "boneA": "2",
+      "boneB": "82",
+      "score": -2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "3",
+      "boneB": "48",
+      "score": -2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "12",
+      "boneB": "23",
+      "score": 2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "13",
+      "boneB": "15",
+      "score": 2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "14",
+      "boneB": "85",
+      "score": 2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "15",
+      "boneB": "13",
+      "score": 2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "18",
+      "boneB": "48",
+      "score": -2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "20",
+      "boneB": "10",
+      "score": -2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "21",
+      "boneB": "10",
+      "score": -2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "23",
+      "boneB": "12",
+      "score": 2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "24",
+      "boneB": "12",
+      "score": -2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "31",
+      "boneB": "14",
+      "score": -2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "31",
+      "boneB": "85",
+      "score": -2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "34",
+      "boneB": "12",
+      "score": -2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "34",
+      "boneB": "23",
+      "score": -2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "41",
+      "boneB": "49",
+      "score": -2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "46",
+      "boneB": "30",
+      "score": -2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "54",
+      "boneB": "81",
+      "score": -2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "58",
+      "boneB": "6",
+      "score": -2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "59",
+      "boneB": "82",
+      "score": -2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "60",
+      "boneB": "95",
+      "score": -2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "63",
+      "boneB": "54",
+      "score": -2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "65",
+      "boneB": "98",
+      "score": -2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "66",
+      "boneB": "95",
+      "score": -2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "67",
+      "boneB": "82",
+      "score": -2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "68",
+      "boneB": "54",
+      "score": -2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "70",
+      "boneB": "12",
+      "score": -2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "70",
+      "boneB": "23",
+      "score": -2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "80",
+      "boneB": "62",
+      "score": -2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "81",
+      "boneB": "54",
+      "score": -2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "82",
+      "boneB": "2",
+      "score": -2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "85",
+      "boneB": "14",
+      "score": 2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "86",
+      "boneB": "6",
+      "score": -2
+    },
+    {
+      "expertId": "eInd1",
+      "boneA": "89",
+      "boneB": "82",
+      "score": -2
+    },
+    {
+      "expertId": "eInd2",
+      "boneA": "1",
+      "boneB": "47",
+      "score": -2
+    },
+    {
+      "expertId": "eInd2",
+      "boneA": "2",
+      "boneB": "89",
+      "score": -2
+    },
+    {
+      "expertId": "eInd2",
+      "boneA": "2",
+      "boneB": "67",
+      "score": -2
+    },
+    {
+      "expertId": "eInd2",
+      "boneA": "2",
+      "boneB": "59",
+      "score": -2
+    },
+    {
+      "expertId": "eInd2",
+      "boneA": "6",
+      "boneB": "86",
+      "score": -2
+    },
+    {
+      "expertId": "eInd2",
+      "boneA": "10",
+      "boneB": "21",
+      "score": -2
+    },
+    {
+      "expertId": "eInd2",
+      "boneA": "11",
+      "boneB": "5",
+      "score": -2
+    },
+    {
+      "expertId": "eInd2",
+      "boneA": "11",
+      "boneB": "97",
+      "score": -2
+    },
+    {
+      "expertId": "eInd2",
+      "boneA": "14",
+      "boneB": "88",
+      "score": -2
+    },
+    {
+      "expertId": "eInd2",
+      "boneA": "20",
+      "boneB": "21",
+      "score": -2
+    },
+    {
+      "expertId": "eInd2",
+      "boneA": "24",
+      "boneB": "31",
+      "score": -2
+    },
+    {
+      "expertId": "eInd2",
+      "boneA": "31",
+      "boneB": "88",
+      "score": -2
+    },
+    {
+      "expertId": "eInd2",
+      "boneA": "34",
+      "boneB": "12",
+      "score": -2
+    },
+    {
+      "expertId": "eInd2",
+      "boneA": "34",
+      "boneB": "23",
+      "score": -2
+    },
+    {
+      "expertId": "eInd2",
+      "boneA": "41",
+      "boneB": "49",
+      "score": -2
+    },
+    {
+      "expertId": "eInd2",
+      "boneA": "54",
+      "boneB": "81",
+      "score": -2
+    },
+    {
+      "expertId": "eInd2",
+      "boneA": "58",
+      "boneB": "6",
+      "score": -2
+    },
+    {
+      "expertId": "eInd2",
+      "boneA": "59",
+      "boneB": "2",
+      "score": -2
+    },
+    {
+      "expertId": "eInd2",
+      "boneA": "60",
+      "boneB": "66",
+      "score": -2
+    },
+    {
+      "expertId": "eInd2",
+      "boneA": "62",
+      "boneB": "80",
+      "score": -2
+    },
+    {
+      "expertId": "eInd2",
+      "boneA": "63",
+      "boneB": "54",
+      "score": -2
+    },
+    {
+      "expertId": "eInd2",
+      "boneA": "66",
+      "boneB": "60",
+      "score": -2
+    },
+    {
+      "expertId": "eInd2",
+      "boneA": "67",
+      "boneB": "82",
+      "score": -2
+    },
+    {
+      "expertId": "eInd2",
+      "boneA": "68",
+      "boneB": "54",
+      "score": -2
+    },
+    {
+      "expertId": "eInd2",
+      "boneA": "81",
+      "boneB": "63",
+      "score": -2
+    },
+    {
+      "expertId": "eInd2",
+      "boneA": "82",
+      "boneB": "2",
+      "score": -2
+    },
+    {
+      "expertId": "eInd2",
+      "boneA": "82",
+      "boneB": "59",
+      "score": -2
+    },
+    {
+      "expertId": "eInd2",
+      "boneA": "86",
+      "boneB": "6",
+      "score": -2
+    },
+    {
+      "expertId": "eInd2",
+      "boneA": "89",
+      "boneB": "82",
+      "score": -2
+    },
+    {
+      "expertId": "eInd3",
+      "boneA": "2",
+      "boneB": "24",
+      "score": -2
+    },
+    {
+      "expertId": "eInd3",
+      "boneA": "2",
+      "boneB": "70",
+      "score": -2
+    },
+    {
+      "expertId": "eInd3",
+      "boneA": "3",
+      "boneB": "100",
+      "score": -2
+    },
+    {
+      "expertId": "eInd3",
+      "boneA": "12",
+      "boneB": "24",
+      "score": -2
+    },
+    {
+      "expertId": "eInd3",
+      "boneA": "12",
+      "boneB": "70",
+      "score": -2
+    },
+    {
+      "expertId": "eInd3",
+      "boneA": "14",
+      "boneB": "31",
+      "score": -2
+    },
+    {
+      "expertId": "eInd3",
+      "boneA": "20",
+      "boneB": "48",
+      "score": -2
+    },
+    {
+      "expertId": "eInd3",
+      "boneA": "24",
+      "boneB": "70",
+      "score": 2
+    },
+    {
+      "expertId": "eInd3",
+      "boneA": "35",
+      "boneB": "36",
+      "score": -2
+    },
+    {
+      "expertId": "eInd3",
+      "boneA": "49",
+      "boneB": "41",
+      "score": -2
+    },
+    {
+      "expertId": "eInd3",
+      "boneA": "54",
+      "boneB": "63",
+      "score": -2
+    },
+    {
+      "expertId": "eInd3",
+      "boneA": "58",
+      "boneB": "6",
+      "score": -2
+    },
+    {
+      "expertId": "eInd3",
+      "boneA": "59",
+      "boneB": "2",
+      "score": -2
+    },
+    {
+      "expertId": "eInd3",
+      "boneA": "59",
+      "boneB": "67",
+      "score": 2
+    },
+    {
+      "expertId": "eInd3",
+      "boneA": "65",
+      "boneB": "98",
+      "score": -2
+    },
+    {
+      "expertId": "eInd3",
+      "boneA": "67",
+      "boneB": "89",
+      "score": 2
+    },
+    {
+      "expertId": "eInd3",
+      "boneA": "100",
+      "boneB": "18",
+      "score": -2
+    },
+    {
+      "expertId": "eInd4",
+      "boneA": "3",
+      "boneB": "18",
+      "score": 2
+    },
+    {
+      "expertId": "eInd4",
+      "boneA": "5",
+      "boneB": "11",
+      "score": -2
+    },
+    {
+      "expertId": "eInd4",
+      "boneA": "10",
+      "boneB": "20",
+      "score": -2
+    },
+    {
+      "expertId": "eInd4",
+      "boneA": "12",
+      "boneB": "34",
+      "score": -2
+    },
+    {
+      "expertId": "eInd4",
+      "boneA": "14",
+      "boneB": "26",
+      "score": -2
+    },
+    {
+      "expertId": "eInd4",
+      "boneA": "20",
+      "boneB": "48",
+      "score": -2
+    },
+    {
+      "expertId": "eInd4",
+      "boneA": "23",
+      "boneB": "34",
+      "score": -2
+    },
+    {
+      "expertId": "eInd4",
+      "boneA": "24",
+      "boneB": "31",
+      "score": -2
+    },
+    {
+      "expertId": "eInd4",
+      "boneA": "30",
+      "boneB": "46",
+      "score": -2
+    },
+    {
+      "expertId": "eInd4",
+      "boneA": "31",
+      "boneB": "26",
+      "score": -2
+    },
+    {
+      "expertId": "eInd4",
+      "boneA": "48",
+      "boneB": "18",
+      "score": -2
+    },
+    {
+      "expertId": "eInd4",
+      "boneA": "54",
+      "boneB": "68",
+      "score": -2
+    },
+    {
+      "expertId": "eInd4",
+      "boneA": "58",
+      "boneB": "6",
+      "score": -2
+    },
+    {
+      "expertId": "eInd4",
+      "boneA": "59",
+      "boneB": "2",
+      "score": -2
+    },
+    {
+      "expertId": "eInd4",
+      "boneA": "67",
+      "boneB": "82",
+      "score": -2
+    },
+    {
+      "expertId": "eInd4",
+      "boneA": "81",
+      "boneB": "63",
+      "score": -2
+    },
+    {
+      "expertId": "eInd4",
+      "boneA": "84",
+      "boneB": "1",
+      "score": -2
+    },
+    {
+      "expertId": "eInd5",
+      "boneA": "1",
+      "boneB": "84",
+      "score": -2
+    },
+    {
+      "expertId": "eInd5",
+      "boneA": "1",
+      "boneB": "1",
+      "score": -2
+    },
+    {
+      "expertId": "eInd5",
+      "boneA": "2",
+      "boneB": "59",
+      "score": -2
+    },
+    {
+      "expertId": "eInd5",
+      "boneA": "6",
+      "boneB": "58",
+      "score": -2
+    },
+    {
+      "expertId": "eInd5",
+      "boneA": "10",
+      "boneB": "20",
+      "score": -2
+    },
+    {
+      "expertId": "eInd5",
+      "boneA": "12",
+      "boneB": "34",
+      "score": -2
+    },
+    {
+      "expertId": "eInd5",
+      "boneA": "20",
+      "boneB": "21",
+      "score": -2
+    },
+    {
+      "expertId": "eInd5",
+      "boneA": "30",
+      "boneB": "46",
+      "score": -2
+    },
+    {
+      "expertId": "eInd5",
+      "boneA": "47",
+      "boneB": "84",
+      "score": -2
+    },
+    {
+      "expertId": "eInd5",
+      "boneA": "47",
+      "boneB": "1",
+      "score": -2
+    },
+    {
+      "expertId": "eInd5",
+      "boneA": "54",
+      "boneB": "63",
+      "score": -2
+    },
+    {
+      "expertId": "eInd5",
+      "boneA": "58",
+      "boneB": "6",
+      "score": -2
+    },
+    {
+      "expertId": "eInd5",
+      "boneA": "59",
+      "boneB": "2",
+      "score": -2
+    },
+    {
+      "expertId": "eInd5",
+      "boneA": "60",
+      "boneB": "66",
+      "score": -2
+    },
+    {
+      "expertId": "eInd5",
+      "boneA": "63",
+      "boneB": "54",
+      "score": -2
+    },
+    {
+      "expertId": "eInd5",
+      "boneA": "67",
+      "boneB": "89",
+      "score": -2
+    },
+    {
+      "expertId": "eInd5",
+      "boneA": "81",
+      "boneB": "63",
+      "score": -2
+    },
+    {
+      "expertId": "eInd5",
+      "boneA": "84",
+      "boneB": "47",
+      "score": -2
+    }
+  ]
+}

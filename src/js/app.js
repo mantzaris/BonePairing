@@ -16,10 +16,27 @@
 // ------------------------------ DOM Elements ------------------------------
 
 const svg = d3.select('#graph');
+
+// new: transparent full-size rect to capture zoom/pan gestures
+const zoomPane = svg.append('rect')
+  .attr('class', 'zoom-pane')
+  .attr('fill', 'transparent')
+  .attr('pointer-events', 'all');
+
 const graphGroup = svg.append('g');
 const linkLayer = graphGroup.append('g');
 const labelLayer = graphGroup.append('g');
 const nodeLayer = graphGroup.append('g');
+
+// new: shared zoom state and behavior
+let currentTransform = d3.zoomIdentity;
+const zoomBehavior = d3.zoom()
+  .scaleExtent([0.25, 4]) // adjust min/max zoom
+  .on('zoom', (event) => {
+    currentTransform = event.transform;
+    graphGroup.attr('transform', currentTransform);
+  });
+
 
 const expertSelect = document.getElementById('expertSelect');
 const aggSelect = document.getElementById('aggSelect');
@@ -152,8 +169,21 @@ function distanceFromScore(score, base = FORCE_BASE_DISTANCE, alpha = FORCE_ALPH
 function sizeSvgToContainer() {
   const el = document.getElementById('graph');
   const rect = el.getBoundingClientRect();
+
   svg.attr('width', rect.width).attr('height', rect.height);
+
+  // new: keep the zoom-capture rect in sync with the SVG size
+  zoomPane
+    .attr('x', 0)
+    .attr('y', 0)
+    .attr('width', rect.width)
+    .attr('height', rect.height);
+
+  // new: update zoom extents for the new size and reapply the current transform
+  zoomBehavior.extent([[0, 0], [rect.width, rect.height]]);
+  svg.call(zoomBehavior).call(zoomBehavior.transform, currentTransform);
 }
+
 
 // ------------------------------ Data loading and indexing ------------------------------
 
@@ -437,7 +467,7 @@ function updateClusters(view, agg) {
 
 async function init() {
   try {
-    const res = await fetch('data/sample-data.json');
+    const res = await fetch('data/Mathew-data.json');
     const json = await res.json();
     dataset = /** @type {Dataset} */ (json);
     buildIndices(dataset);
