@@ -123,3 +123,31 @@ th, td {
 @media (max-width: 900px) {
   .panels { grid-template-columns: 1fr; }
 }
+
+
+
+/* two-pane graph layout */
+.graphs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  align-items: start;
+  padding: 8px 12px 0;
+}
+
+.graph-panel svg {
+  width: 100%;
+  height: 520px; /* adjust to taste */
+  border: 1px solid #e5e7eb;
+  background: #fff;
+}
+
+/* legend swatch colors (existing ones assumed) */
+.legend .swatch.purple {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 6px;
+  border-radius: 2px;
+  background: #8e24aa;
+}

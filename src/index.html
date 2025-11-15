@@ -1,5 +1,3 @@
-
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -40,10 +38,24 @@
     <div class="legend">
       <span class="key"><span class="swatch green"></span> positive</span>
       <span class="key"><span class="swatch red"></span> negative</span>
+      <span class="key"><span class="swatch purple" style="background:#8e24aa;"></span> chemistry link</span>
     </div>
   </header>
 
-  <svg id="graph" aria-label="Association network"></svg>
+  <!-- Two graph panes -->
+  <div class="graphs">
+    <div class="graph-panel">
+      <h3 style="margin: 8px 0 4px;">Expert/Consensus network</h3>
+      <svg id="graphLeft" aria-label="Association network (left)"></svg>
+    </div>
+    <div class="graph-panel">
+      <h3 style="margin: 8px 0 4px;">Augmented by chemistry (isolates linked to nearest)</h3>
+      <svg id="graphRight" aria-label="Association network (right, chemistry-augmented)"></svg>
+      <div class="legend" style="margin-top:6px;">
+        <span class="key"><span class="swatch purple" style="background:#8e24aa;"></span> chemistry nearest neighbor</span>
+      </div>
+    </div>
+  </div>
 
   <main class="panels">
     <section>

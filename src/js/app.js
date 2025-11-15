@@ -2,41 +2,12 @@
 'use strict';
 
 /**
- * Bones Association Explorer MVP
- * - Data model: bones, experts, ratings (Likert in [-2, 2])
- * - Views: per-expert and consensus
- * - Consensus: mean, median, trimmed mean, weighted by inter-rater agreement
- * - UI: threshold, negative edge toggle, must-link clustering
- *
- * Notes for contributors:
- * - Keep variable names descriptive. No slang or cryptic abbreviations.
- * - Treat scores as symmetric and store canonical pairs (a|b with a < b).
+ * Bones Association Explorer MVP (two-pane)
+ * - Left: original expert/consensus network
+ * - Right: augmented network where isolated bones get a chemistry nearest-neighbor edge
  */
 
 // ------------------------------ DOM Elements ------------------------------
-
-const svg = d3.select('#graph');
-
-// new: transparent full-size rect to capture zoom/pan gestures
-const zoomPane = svg.append('rect')
-  .attr('class', 'zoom-pane')
-  .attr('fill', 'transparent')
-  .attr('pointer-events', 'all');
-
-const graphGroup = svg.append('g');
-const linkLayer = graphGroup.append('g');
-const labelLayer = graphGroup.append('g');
-const nodeLayer = graphGroup.append('g');
-
-// new: shared zoom state and behavior
-let currentTransform = d3.zoomIdentity;
-const zoomBehavior = d3.zoom()
-  .scaleExtent([0.25, 4]) // adjust min/max zoom
-  .on('zoom', (event) => {
-    currentTransform = event.transform;
-    graphGroup.attr('transform', currentTransform);
-  });
-
 
 const expertSelect = document.getElementById('expertSelect');
 const aggSelect = document.getElementById('aggSelect');
@@ -57,12 +28,33 @@ const CHARGE_STRENGTH = -120;
 
 // ------------------------------ Utility functions ------------------------------
 
-/** Canonical pair key "a|b" with a < b */
+function countChemVectors() {
+  let c = 0;
+  for (const id of bones) if (getChemVector(id)) c++;
+  return c;
+}
+
+/** Add: small in-graph status message for the right pane */
+function updateChemStatus(scene, text) {
+  const sel = scene.group.selectAll('text.chem-status').data(text ? [text] : []);
+  sel.exit().remove();
+  sel.enter().append('text')
+    .attr('class', 'chem-status')
+    .attr('x', 12)
+    .attr('y', 20)
+    .attr('font-size', 12)
+    .attr('fill', '#6b7280')
+    .attr('opacity', 0.9)
+    .text(d => d)
+    .merge(sel)
+    .text(d => d);
+}
+
+
 function pairKey(a, b) {
   return a < b ? a + '|' + b : b + '|' + a;
 }
 
-/** Shallow groupBy into Map(key -> array) */
 function groupBy(array, keyFn) {
   const out = new Map();
   for (const item of array) {
@@ -97,10 +89,6 @@ function sign(x) {
   return x > 0 ? 1 : x < 0 ? -1 : 0;
 }
 
-/**
- * Weighted consensus by simple leave-one-out sign agreement.
- * Returns { scores: Map(pairKey -> score), weights: Map(expertId -> weight) }.
- */
 function weightedConsensus(edgeMapsByExpert, pairKeys) {
   const expertIds = Array.from(edgeMapsByExpert.keys());
   const perExpertScores = new Map();
@@ -115,12 +103,10 @@ function weightedConsensus(edgeMapsByExpert, pairKeys) {
     perExpertScores.set(expertId, view);
   }
 
-  // Compute agreement ratio per expert
   for (const e of expertIds) {
     let agree = 0;
     let total = 0;
     for (const k of pairKeys) {
-      // leave-one-out mean sign
       let sum = 0;
       let count = 0;
       for (const f of expertIds) {
@@ -141,13 +127,11 @@ function weightedConsensus(edgeMapsByExpert, pairKeys) {
     weights.set(e, total > 0 ? agree / total : 1);
   }
 
-  // Normalize to sum to 1, avoid division by zero
   const wsum = Array.from(weights.values()).reduce((a, b) => a + b, 0) || 1;
   for (const e of expertIds) {
     weights.set(e, weights.get(e) / wsum);
   }
 
-  // Weighted mean per key
   const scores = new Map();
   for (const k of pairKeys) {
     let s = 0;
@@ -160,50 +144,83 @@ function weightedConsensus(edgeMapsByExpert, pairKeys) {
   return { scores, weights };
 }
 
-/** Distance mapping: positive scores pull together, negative push apart. */
 function distanceFromScore(score, base = FORCE_BASE_DISTANCE, alpha = FORCE_ALPHA) {
   return base * Math.exp(-alpha * score);
 }
 
-/** Resize the SVG to the container size. */
-function sizeSvgToContainer() {
-  const el = document.getElementById('graph');
+// ------------------------------ Two D3 scene helpers ------------------------------
+
+function makeScene(svgSelector) {
+  const svg = d3.select(svgSelector);
+
+  const zoomPane = svg.append('rect')
+    .attr('class', 'zoom-pane')
+    .attr('fill', 'transparent')
+    .attr('pointer-events', 'all');
+
+  const group = svg.append('g');
+  const linkLayer = group.append('g');
+  const labelLayer = group.append('g');
+  const nodeLayer = group.append('g');
+
+  let currentTransform = d3.zoomIdentity;
+  const zoomBehavior = d3.zoom()
+    .scaleExtent([0.25, 4])
+    .on('zoom', (event) => {
+      currentTransform = event.transform;
+      group.attr('transform', currentTransform);
+    });
+
+  return {
+    svg, zoomPane, group, linkLayer, labelLayer, nodeLayer,
+    zoomBehavior, get currentTransform() { return currentTransform; },
+    set currentTransform(t) { currentTransform = t; },
+    simulation: null
+  };
+}
+
+const leftScene = makeScene('#graphLeft');
+const rightScene = makeScene('#graphRight');
+
+function sizeSceneToContainer(scene, elementId) {
+  const el = document.getElementById(elementId);
   const rect = el.getBoundingClientRect();
 
-  svg.attr('width', rect.width).attr('height', rect.height);
+  scene.svg.attr('width', rect.width).attr('height', rect.height);
 
-  // new: keep the zoom-capture rect in sync with the SVG size
-  zoomPane
+  scene.zoomPane
     .attr('x', 0)
     .attr('y', 0)
     .attr('width', rect.width)
     .attr('height', rect.height);
 
-  // new: update zoom extents for the new size and reapply the current transform
-  zoomBehavior.extent([[0, 0], [rect.width, rect.height]]);
-  svg.call(zoomBehavior).call(zoomBehavior.transform, currentTransform);
+  scene.zoomBehavior.extent([[0, 0], [rect.width, rect.height]]);
+  scene.svg.call(scene.zoomBehavior).call(scene.zoomBehavior.transform, scene.currentTransform);
 }
 
+function sizeAllScenes() {
+  sizeSceneToContainer(leftScene, 'graphLeft');
+  sizeSceneToContainer(rightScene, 'graphRight');
+}
 
 // ------------------------------ Data loading and indexing ------------------------------
 
 /**
  * @typedef {Object} Dataset
  * @property {string} collectionId
- * @property {{id: string, type?: string}[]} bones
+ * @property {{id: string, type?: string, chemistry?: {vector?: number[]}}[]} bones
  * @property {{id: string, name: string}[]} experts
  * @property {{expertId: string, boneA: string, boneB: string, score: number}[]} ratings
+ * @property {{vectors?: Record<string, number[]>}} chemistry
  */
 
-let dataset = null; // will hold the loaded JSON
+let dataset = null;
 let bones = [];     // string[]
 let expertsById = new Map(); // id -> expert
 let expertEdgeMaps = new Map(); // expertId -> Map(pairKey -> score)
-let simulation = null;
 
 /** Canonicalize rating entries and build indices. */
 function buildIndices(raw) {
-  // Copy bones and experts maps
   const bonesSet = new Set(raw.bones.map(b => b.id));
   for (const r of raw.ratings) {
     bonesSet.add(r.boneA);
@@ -213,7 +230,6 @@ function buildIndices(raw) {
 
   expertsById = new Map(raw.experts.map(e => [e.id, e]));
 
-  // Canonicalize ratings (ensure boneA < boneB and add .key)
   const canonicalRatings = raw.ratings.map(r => {
     const a = r.boneA;
     const b = r.boneB;
@@ -221,7 +237,6 @@ function buildIndices(raw) {
     return { expertId: r.expertId, boneA: x, boneB: y, score: r.score, key: pairKey(x, y) };
   });
 
-  // Build expert -> Map(pairKey -> mean score if duplicates exist)
   const byExpert = groupBy(canonicalRatings, row => row.expertId);
   expertEdgeMaps = new Map();
   for (const [expertId, rows] of byExpert.entries()) {
@@ -233,11 +248,9 @@ function buildIndices(raw) {
     expertEdgeMaps.set(expertId, edgeMap);
   }
 
-  // Populate expert selector
   populateExpertSelector(raw.experts);
 }
 
-/** Add experts to the dropdown after the default consensus. */
 function populateExpertSelector(experts) {
   for (const e of experts) {
     const opt = document.createElement('option');
@@ -247,7 +260,6 @@ function populateExpertSelector(experts) {
   }
 }
 
-/** All pair keys present in any expert map. */
 function allPairKeys() {
   const keys = new Set();
   for (const m of expertEdgeMaps.values()) {
@@ -256,13 +268,11 @@ function allPairKeys() {
   return Array.from(keys);
 }
 
-/** Build consensus map with the selected method. */
 function buildConsensus(method) {
   const keys = allPairKeys();
   if (method === 'weighted') {
     return weightedConsensus(expertEdgeMaps, keys);
   }
-
   const scores = new Map();
   for (const k of keys) {
     const vals = [];
@@ -278,12 +288,115 @@ function buildConsensus(method) {
   return { scores, weights: new Map() };
 }
 
-// ------------------------------ Rendering ------------------------------
+// ------------------------------ Chemistry helpers ------------------------------
 
-/** Redraw the whole view based on UI state. */
-function redraw() {
-  sizeSvgToContainer();
+function getChemVector(boneId) {
+  if (dataset && dataset.chemistry && dataset.chemistry.vectors && dataset.chemistry.vectors[boneId]) {
+    return dataset.chemistry.vectors[boneId];
+  }
+  const bone = dataset.bones.find(b => b.id === boneId);
+  if (bone && bone.chemistry && Array.isArray(bone.chemistry.vector)) {
+    return bone.chemistry.vector;
+  }
+  return null;
+}
 
+function euclidean(a, b) {
+  let s = 0;
+  for (let i = 0; i < a.length; i++) {
+    const d = a[i] - b[i];
+    s += d * d;
+  }
+  return Math.sqrt(s);
+}
+
+
+function computeMaxChemDistance() {
+  const ids = bones.filter(id => getChemVector(id));
+  if (ids.length < 2) return 0; // not enough data for a max distance
+
+  let maxd = 0;
+  for (let i = 0; i < ids.length; i++) {
+    const ai = getChemVector(ids[i]);
+    if (!ai) continue;
+    for (let j = i + 1; j < ids.length; j++) {
+      const bj = getChemVector(ids[j]);
+      if (!bj) continue;
+      const d = euclidean(ai, bj);
+      if (d > maxd) maxd = d;
+    }
+  }
+  return maxd; // may be 0 if all vectors are identical
+}
+
+
+
+
+function nearestByChem(boneId) {
+  const a = getChemVector(boneId);
+  if (!a) return null;
+  let bestId = null;
+  let bestDist = Infinity;
+  for (const id of bones) {
+    if (id === boneId) continue;
+    const b = getChemVector(id);
+    if (!b) continue;
+    const d = euclidean(a, b);
+    if (d < bestDist) {
+      bestDist = d;
+      bestId = id;
+    }
+  }
+  return bestId ? { id: bestId, dist: bestDist } : null;
+}
+
+
+// ---------- Chemistry coverage helpers (fallback + diagnostics) ----------
+function countChemCoverage() {
+  let withVec = 0;
+  for (const id of bones) if (getChemVector(id)) withVec += 1;
+  return { withVec, total: bones.length };
+}
+
+/**
+ * If the JSON lacks chemistry vectors, create deterministic placeholders
+ * so the augmented graph still works. No-op when vectors already exist.
+ */
+function ensureChemVectorsIfMissing() {
+  const cov = countChemCoverage();
+  if (cov.withVec > 0) {
+    console.info(`[chem] vectors present: ${cov.withVec}/${cov.total}`);
+    return;
+  }
+  console.warn('[chem] no vectors found; synthesizing placeholders');
+
+  // Simple seeded LCG so vectors are reproducible per bone id
+  function lcg(seed) {
+    let s = seed >>> 0;
+    return () => {
+      s = (1664525 * s + 1013904223) >>> 0;
+      return s / 4294967296;
+    };
+  }
+
+  for (const b of dataset.bones) {
+    const idNum = parseInt(b.id, 10) || 0;
+    const rnd = lcg(12345 + idNum * 2654435761);
+    const raw = [rnd(), rnd(), rnd(), rnd(), rnd()];
+    const sum = raw.reduce((a, c) => a + c, 0) || 1;
+    const vec = raw.map(v => v / sum); // unit-sum 5D signature
+    if (!b.chemistry) b.chemistry = {};
+    b.chemistry.vector = vec;
+  }
+  const cov2 = countChemCoverage();
+  console.info(`[chem] synthesized vectors: ${cov2.withVec}/${cov2.total}`);
+}
+
+
+
+// ------------------------------ Edge construction ------------------------------
+
+function buildEdgesForCurrentView() {
   const view = expertSelect.value;
   const agg = aggSelect.value;
   const threshold = parseFloat(thresholdSlider.value);
@@ -311,33 +424,104 @@ function redraw() {
     const [a, b] = k.split('|');
     edges.push({ source: a, target: b, score: s });
   }
+  return { edges, fromLabel };
+}
 
-  const nodes = bones.map(id => ({ id }));
+function buildChemAugmentEdges(edgesBase) {
+  // Build degree from base edges (strings before simulation mutates)
+  const deg = new Map(bones.map(id => [id, 0]));
+  const haveEdgeKey = new Set();
+  for (const e of edgesBase) {
+    const a = typeof e.source === 'string' ? e.source : e.source.id;
+    const b = typeof e.target === 'string' ? e.target : e.target.id;
+    deg.set(a, (deg.get(a) || 0) + 1);
+    deg.set(b, (deg.get(b) || 0) + 1);
+    haveEdgeKey.add(pairKey(a, b));
+  }
 
-  // Stop any previous simulation
-  if (simulation) simulation.stop();
+  const isolates = bones.filter(id => (deg.get(id) || 0) === 0);
+
+  // If no chemistry vectors exist at all, or we cannot compute a usable scale, bail early.
+  const chemCount = countChemVectors();
+  if (chemCount === 0) {
+    console.warn('[chem] No chemistry vectors found in dataset.');
+    return { edges: [], status: 'No chemistry vectors in data' };
+  }
+
+  if (isolates.length === 0) {
+    // Not an error: you currently have no isolates under these filters.
+    return { edges: [], status: 'No isolates under current filters' };
+  }
+
+  const dmax = computeMaxChemDistance();
+  if (dmax <= 0) {
+    console.warn('[chem] Chemistry vectors have zero spread; cannot form similarity.');
+    return { edges: [], status: 'Chemistry vectors have zero spread' };
+  }
+
+  const chemEdges = [];
+  const chemKeys = new Set();
+
+  for (const id of isolates) {
+    const nn = nearestByChem(id);
+    if (!nn) continue; // this isolate lacks a vector or neighbors lack vectors
+    const k = pairKey(id, nn.id);
+    if (haveEdgeKey.has(k) || chemKeys.has(k)) continue;
+
+    const sim = Math.max(0, Math.min(1, 1 - nn.dist / dmax)); // normalize to [0,1]
+    const scoreChem = 0.8 + 1.2 * sim; // gentle pull in [0.8, 2.0]
+
+    chemEdges.push({
+      source: id,
+      target: nn.id,
+      score: scoreChem,
+      isChem: true,
+      chemSim: sim,
+      chemDist: nn.dist
+    });
+    chemKeys.add(k);
+  }
+  return { edges: chemEdges, status: chemEdges.length ? null : 'Isolates lacked usable chemistry' };
+}
+
+
+// ------------------------------ Rendering ------------------------------
+
+function drawScene(scene, nodes, edgeList) {
+  // stop previous sim
+  if (scene.simulation) scene.simulation.stop();
 
   // Scales
   const widthScale = d3.scaleLinear().domain([0, 2]).range([1, 4]);
 
   // Links
-  const linksSel = linkLayer.selectAll('line').data(edges, d => d.source + '|' + d.target);
+  const linkKey = (d) => {
+    const a = d.source.id || d.source;
+    const b = d.target.id || d.target;
+    return (a < b ? a + '|' + b : b + '|' + a) + (d.isChem ? '|chem' : '|human');
+  };
+
+  const linksSel = scene.linkLayer.selectAll('line').data(edgeList, linkKey);
   linksSel.exit().remove();
   const linksEnter = linksSel.enter().append('line');
   const links = linksEnter.merge(linksSel)
-    .attr('stroke', d => d.score >= 0 ? '#1e9e45' : '#c62828')
-    .attr('stroke-width', d => widthScale(Math.min(2, Math.abs(d.score))))
-    .attr('stroke-opacity', 0.9)
-    .attr('stroke-dasharray', d => d.score < 0 ? '4,3' : '0');
+    .attr('stroke', d => d.isChem ? '#8e24aa' : (d.score >= 0 ? '#1e9e45' : '#c62828'))
+    .attr('stroke-width', d => d.isChem ? 2 : widthScale(Math.min(2, Math.abs(d.score))))
+    .attr('stroke-opacity', d => d.isChem ? 0.75 : 0.9)
+    .attr('stroke-dasharray', d => d.isChem ? '2,2' : (d.score < 0 ? '4,3' : '0'));
 
   // Edge labels
-  const labelSel = labelLayer.selectAll('text').data(edges, d => d.source + '|' + d.target);
+  const labelSel = scene.labelLayer.selectAll('text').data(edgeList, linkKey);
   labelSel.exit().remove();
   const labelEnter = labelSel.enter().append('text').attr('class', 'edge-label');
-  const labels = labelEnter.merge(labelSel).text(d => d.score.toFixed(2));
+  const labels = labelEnter.merge(labelSel)
+    .text(d => d.isChem ? ('chem ' + (d.chemSim !== undefined ? d.chemSim.toFixed(2) : '')) : d.score.toFixed(2))
+    .attr('font-size', 10)
+    .attr('fill', d => d.isChem ? '#6a1b9a' : '#111827')
+    .attr('opacity', 0.85);
 
   // Nodes
-  const nodeSel = nodeLayer.selectAll('g.node').data(nodes, d => d.id);
+  const nodeSel = scene.nodeLayer.selectAll('g.node').data(nodes, d => d.id);
   nodeSel.exit().remove();
   const nodeEnter = nodeSel.enter().append('g').attr('class', 'node');
   nodeEnter.append('circle')
@@ -355,21 +539,32 @@ function redraw() {
 
   nodesMerged.on('mouseover', function (_evt, d) {
     const id = d.id;
-    links.attr('stroke-opacity', l => (l.source.id === id || l.target.id === id) ? 1.0 : 0.15);
+    links.attr('stroke-opacity', l => {
+      const a = l.source.id || l.source; const b = l.target.id || l.target;
+      return (a === id || b === id) ? 1.0 : 0.15;
+    });
     nodesMerged.selectAll('circle').attr('opacity', nd => nd.id === id ? 1.0 : 0.6);
   }).on('mouseout', function () {
-    links.attr('stroke-opacity', 0.9);
+    links.attr('stroke-opacity', l => l.isChem ? 0.75 : 0.9);
     nodesMerged.selectAll('circle').attr('opacity', 1.0);
   });
 
   // Force simulation
-  simulation = d3.forceSimulation(nodes)
+  const svgW = +scene.svg.attr('width');
+  const svgH = +scene.svg.attr('height');
+  scene.simulation = d3.forceSimulation(nodes)
     .force('charge', d3.forceManyBody().strength(CHARGE_STRENGTH))
-    .force('center', d3.forceCenter(svg.attr('width') / 2, svg.attr('height') / 2))
-    .force('link', d3.forceLink(edges)
+    .force('center', d3.forceCenter(svgW / 2, svgH / 2))
+    .force('link', d3.forceLink(edgeList)
       .id(d => d.id)
-      .distance(d => distanceFromScore(d.score))
-      .strength(0.7))
+      .distance(d => {
+        if (d.isChem) {
+          // Slightly longer baseline and gentler decay for chemistry edges
+          return distanceFromScore(d.score, FORCE_BASE_DISTANCE * 1.1, FORCE_ALPHA * 0.7);
+        }
+        return distanceFromScore(d.score);
+      })
+      .strength(d => d.isChem ? 0.35 : 0.7))
     .on('tick', () => {
       links
         .attr('x1', d => d.source.x)
@@ -383,13 +578,45 @@ function redraw() {
 
       nodesMerged.attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
     });
-
-  // Update table and clusters
-  updatePairsTable(edges, fromLabel);
-  updateClusters(view, agg);
 }
 
-/** Update the top pairs table. */
+// ------------------------------ Top-level redraw ------------------------------
+
+
+
+function redrawAll() {
+  sizeAllScenes();
+
+  const { edges: baseEdges, fromLabel } = buildEdgesForCurrentView();
+  const nodes = bones.map(id => ({ id }));
+
+  // Left: base network
+  drawScene(leftScene, nodes.map(n => ({ ...n })), baseEdges.map(e => ({ ...e })));
+
+  // Right: base + chemistry augmentation for isolates
+  const chemResult = buildChemAugmentEdges(baseEdges);
+  const chemEdges = Array.isArray(chemResult) ? chemResult : (chemResult.edges || []);
+  const statusText = Array.isArray(chemResult) ? null : (chemResult.status || null);
+
+  const rightEdges = baseEdges.concat(chemEdges);
+  drawScene(rightScene, nodes.map(n => ({ ...n })), rightEdges);
+
+  // Show why chemistry edges may not be visible
+  updateChemStatus(rightScene, statusText);
+
+  // Side panels reflect the left/base view
+  updatePairsTable(baseEdges, fromLabel);
+  updateClusters(expertSelect.value, aggSelect.value);
+
+  // Helpful logs for quick inspection
+  console.info(`[chem] vectors: ${countChemVectors()}, isolates: ${bones.length - new Set(baseEdges.flatMap(e => [e.source, e.target]).map(x => (typeof x === 'string' ? x : x.id))).size}, chemEdges drawn: ${chemEdges.length}`);
+}
+
+
+
+
+
+/** Update the top pairs table (left view). */
 function updatePairsTable(edges, fromLabel) {
   pairsTableBody.innerHTML = '';
   const sorted = edges.slice().sort((a, b) => Math.abs(b.score) - Math.abs(a.score)).slice(0, 30);
@@ -404,7 +631,7 @@ function updatePairsTable(edges, fromLabel) {
   }
 }
 
-/** Very simple must-link clustering by connected components. */
+/** Very simple must-link clustering by connected components (left view). */
 function updateClusters(view, agg) {
   const tPos = parseFloat(mustLinkSlider.value);
   mustLinkValue.textContent = tPos.toFixed(1);
@@ -417,7 +644,6 @@ function updateClusters(view, agg) {
     edgeMap = expertEdgeMaps.get(view) || new Map();
   }
 
-  // Build adjacency for edges with score >= must-link threshold
   const adj = new Map(bones.map(b => [b, new Set()]));
   for (const [k, s] of edgeMap.entries()) {
     if (s >= tPos) {
@@ -427,7 +653,6 @@ function updateClusters(view, agg) {
     }
   }
 
-  // Connected components DFS
   const seen = new Set();
   const clusters = [];
   for (const b of bones) {
@@ -449,7 +674,6 @@ function updateClusters(view, agg) {
   }
   clusters.sort((a, b) => b.length - a.length);
 
-  // Render clusters
   clustersDiv.innerHTML = '';
   for (const comp of clusters) {
     const line = document.createElement('div');
@@ -470,28 +694,33 @@ async function init() {
     const res = await fetch('data/Mathew-data.json');
     const json = await res.json();
     dataset = /** @type {Dataset} */ (json);
+
     buildIndices(dataset);
-    sizeSvgToContainer();
-    redraw();
+    ensureChemVectorsIfMissing();
+    sizeAllScenes();
+    redrawAll();
+
   } catch (err) {
     console.error('Failed to load data:', err);
   }
 }
 
 window.addEventListener('resize', () => {
-  sizeSvgToContainer();
-  // When resizing, recenter the force layout target
-  if (simulation) {
-    simulation.force('center', d3.forceCenter(svg.attr('width') / 2, svg.attr('height') / 2));
-    simulation.alpha(0.3).restart();
+  sizeAllScenes();
+  // recenter both simulations
+  for (const scene of [leftScene, rightScene]) {
+    if (scene.simulation) {
+      const w = +scene.svg.attr('width'), h = +scene.svg.attr('height');
+      scene.simulation.force('center', d3.forceCenter(w / 2, h / 2));
+      scene.simulation.alpha(0.3).restart();
+    }
   }
 });
 
-expertSelect.addEventListener('change', redraw);
-aggSelect.addEventListener('change', redraw);
-thresholdSlider.addEventListener('input', redraw);
-showNegativeCheckbox.addEventListener('change', redraw);
+expertSelect.addEventListener('change', redrawAll);
+aggSelect.addEventListener('change', redrawAll);
+thresholdSlider.addEventListener('input', redrawAll);
+showNegativeCheckbox.addEventListener('change', redrawAll);
 mustLinkSlider.addEventListener('input', () => updateClusters(expertSelect.value, aggSelect.value));
 
-// Kick off
 init();
